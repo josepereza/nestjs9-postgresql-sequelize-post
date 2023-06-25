@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Model, Table, DataType, BelongsToMany } from 'sequelize-typescript';
+import { Column, Model, Table, DataType, BelongsToMany, HasMany } from 'sequelize-typescript';
+import { Post } from 'src/posts/posts.model';
 import { Role } from 'src/roles/roles.model';
 import { UserRoles } from 'src/roles/user-roles.model';
 
@@ -49,6 +50,9 @@ export class User extends Model<User, UserCreationAttrs> {
 	})
 	banReason: string;
 
-	@BelongsToMany(() => Role, () => UserRoles)
+	@BelongsToMany(() => Role, () => UserRoles) // многие ко многим (через дополнительную таблицу)
 	roles: Role[];
+
+	@HasMany(() => Post) // указываем, что 1 пользователь может иметь много постов
+	post: Post[];
 }
